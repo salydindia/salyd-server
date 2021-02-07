@@ -6,6 +6,7 @@ module.exports = async (request) => {
     const { authorization } = request.req.headers;
 
     const secret = process.env.JWT_SECRET;
+
     if (!authorization) {
         return {
             message: "Authorization header not present",

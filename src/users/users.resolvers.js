@@ -11,7 +11,7 @@ const userResolver = {
 
                 const user = await Users.findById({
                     _id: userId,
-                }).populate("friends", ["_id", "name", "email", "phone"]);
+                });
 
                 return {
                     user,
@@ -60,7 +60,7 @@ const userResolver = {
         loginUser: async (_parent, args) => {
             const { email, password } = args.input;
 
-            const secret = "ye app machayega";
+            const secret = process.env.JWT_SECRET;
 
             const user = await Users.findOne({
                 email,
