@@ -10,6 +10,10 @@ const { userResolver } = require("./users/users.resolvers.js");
 const RestaurantDef = require("./restaurant/restaurant.types.js");
 const { restaurantResolver } = require("./restaurant/restaurant.resolvers.js");
 
+//Menu Type Definition
+const MenuDef = require("./restaurant/menu.types.js");
+const { menuResolver } = require("./restaurant/menu.resolvers.js");
+
 //Todo add subscription
 
 const SchemaDef = gql`
@@ -20,11 +24,11 @@ const SchemaDef = gql`
 `;
 
 //All type definitions
-const typedefs = [UsersDef, SchemaDef, RestaurantDef];
+const typedefs = [UsersDef, SchemaDef, RestaurantDef, MenuDef];
 
 const mergedDefs = mergeTypeDefs(typedefs);
 
-const resolvers = [userResolver, restaurantResolver];
+const resolvers = [userResolver, restaurantResolver, menuResolver];
 
 const mergedResolvers = mergeResolvers(resolvers);
 

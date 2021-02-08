@@ -12,7 +12,7 @@ const userResolver = {
     Query: {
         getUser: async (_parent, args, context) => {
             if (context.isAuth) {
-                const userId = context.userData._id;
+                const userId = context._id;
 
                 try {
                     const user = await Users.findById({
