@@ -6,6 +6,12 @@ const { gql } = require("apollo-server-express");
 const { UsersDef } = require("../src/users/users.types.js");
 const { userResolver } = require("./users/users.resolvers.js");
 
+//Restaurant Type definition
+const RestaurantDef = require("./restaurant/restaurant.types.js");
+const { restaurantResolver } = require("./restaurant/restaurant.resolvers.js");
+
+//Todo add subscription
+
 const SchemaDef = gql`
     schema {
         query: Query
@@ -14,11 +20,11 @@ const SchemaDef = gql`
 `;
 
 //All type definitions
-const typedefs = [UsersDef, SchemaDef];
+const typedefs = [UsersDef, SchemaDef, RestaurantDef];
 
 const mergedDefs = mergeTypeDefs(typedefs);
 
-const resolvers = [userResolver];
+const resolvers = [userResolver, restaurantResolver];
 
 const mergedResolvers = mergeResolvers(resolvers);
 
