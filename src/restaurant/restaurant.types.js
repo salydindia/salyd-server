@@ -34,6 +34,7 @@ const RestaurantDef = gql`
         phone: Float!
         email: String!
         password: String
+        menu: [Menu]
     }
 
     """
