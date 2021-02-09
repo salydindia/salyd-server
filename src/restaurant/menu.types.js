@@ -36,6 +36,13 @@ const MenuDef = gql`
         Dinner
         SweetDish
     }
+
+    type OrderedMenu {
+        _id: Int!
+        name: String!
+        price: Int!
+        count: Int!
+    }
 `;
 
 module.exports = MenuDef;

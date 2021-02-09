@@ -16,6 +16,10 @@ const { menuResolver } = require("./restaurant/menu.resolvers.js");
 
 //Todo add subscription
 
+//Table Type Definition
+const tableDef = require("./table/table.types.js");
+const { tableResolver } = require("./table/table.resolvers.js");
+
 const SchemaDef = gql`
     schema {
         query: Query
@@ -24,11 +28,16 @@ const SchemaDef = gql`
 `;
 
 //All type definitions
-const typedefs = [UsersDef, SchemaDef, RestaurantDef, MenuDef];
+const typedefs = [UsersDef, SchemaDef, RestaurantDef, MenuDef, tableDef];
 
 const mergedDefs = mergeTypeDefs(typedefs);
 
-const resolvers = [userResolver, restaurantResolver, menuResolver];
+const resolvers = [
+    userResolver,
+    restaurantResolver,
+    menuResolver,
+    tableResolver,
+];
 
 const mergedResolvers = mergeResolvers(resolvers);
 
