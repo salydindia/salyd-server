@@ -6,12 +6,17 @@ const TableDef = gql`
         Adding table details to the database
         _id is restaurantId+threedigits = tableId
         """
-        addTable(_id: Int!): Table!
+        addTable(_id: Int!): AddTablePayload
 
         """
         New table created by user by entering table details(User will be admin)
         """
-        newTable(tableId: Int!): Table!
+        newTable(tableId: Int!): NewTablePayload
+
+        """
+        Join table using roomId (for logged in users)
+        """
+        addMember(roomId: Int!): AddMemberPayload
     }
 
     type Table {
@@ -20,6 +25,18 @@ const TableDef = gql`
         tableOf: Restaurant
         roomId: Int
         menu: [OrderedMenu]
+    }
+
+    type AddTablePayload {
+        table: Table
+    }
+
+    type NewTablePayload {
+        table: Table
+    }
+
+    type AddMemberPayload {
+        table: Table
     }
 `;
 
