@@ -100,6 +100,85 @@ const tableResolver = {
                 );
             }
         },
+        addMember: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const { roomId } = args;
+
+                try {
+                    const table = await Table.findOneAndUpdate(
+                        {
+                            roomId,
+                        },
+                        {
+                            $push: {
+                                users: context._id,
+                            },
+                        },
+                        {
+                            new: true,
+                            runValidators: true,
+                        }
+                    ).populate("tableOf");
+
+                    console.log(table);
+
+                    if (table === null) {
+                        throw new UserInputError("Invalid RoomId");
+                    }
+                    return {
+                        table,
+                    };
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(e.message);
+                }
+            } else {
+                throw new AuthenticationError(
+                    "Please login to access this resource"
+                );
+            }
+        },
+        addGuestMember: async (_parent, args) => {
+            const { name, roomId } = args.input;
+
+            const newUser = new Users({
+                name,
+            });
+
+            try {
+                const savedUser = await newUser.save();
+
+                console.log(savedUser);
+
+                const table = await Table.findOneAndUpdate(
+                    {
+                        roomId,
+                    },
+                    {
+                        $push: {
+                            users: savedUser._id,
+                        },
+                    },
+                    {
+                        runValidators: true,
+                        new: true,
+                    }
+                )
+                    .populate("tableOf")
+                    .populate("users");
+                console.log(table);
+
+                if (table === null) {
+                    throw new UserInputError("Invalid RoomId");
+                }
+                return {
+                    table,
+                };
+            } catch (e) {
+                console.log(e, "error");
+                throw new ApolloError(e.message);
+            }
+        },
     },
 };
 

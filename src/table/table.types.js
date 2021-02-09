@@ -17,6 +17,11 @@ const TableDef = gql`
         Join table using roomId (for logged in users)
         """
         addMember(roomId: Int!): AddMemberPayload
+
+        """
+        Join table using roomId(for guest users)
+        """
+        addGuestMember(input: AddGuestMemberInput!): AddGuestMemberPayload
     }
 
     type Table {
@@ -36,6 +41,15 @@ const TableDef = gql`
     }
 
     type AddMemberPayload {
+        table: Table
+    }
+
+    input AddGuestMemberInput {
+        roomId: Int!
+        name: String!
+    }
+
+    type AddGuestMemberPayload {
         table: Table
     }
 `;
