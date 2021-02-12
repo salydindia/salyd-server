@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema;
 
+const { ObjectId } = schema;
+
 const menuSchema = new schema({
     name: {
         type: String,
@@ -27,7 +29,7 @@ const menuSchema = new schema({
 });
 
 const restaurantSchema = new schema({
-    restaurantId: {
+    _id: {
         type: Number,
     },
     ownerName: {

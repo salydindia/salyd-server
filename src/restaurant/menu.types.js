@@ -38,10 +38,11 @@ const MenuDef = gql`
     }
 
     type OrderedMenu {
-        _id: Int!
+        _id: ID!
         name: String!
         price: Int!
         count: Int!
+        extraDetails: String
     }
 `;
 

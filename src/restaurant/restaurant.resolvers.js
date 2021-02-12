@@ -37,6 +37,11 @@ const restaurantResolver = {
         addRestaurant: async (_parent, args) => {
             const { ownerName, name, address, email, phone } = args.input;
 
+            const allRestaurants = await Restaurant.find({});
+            const count = allRestaurants.length;
+
+            console.log(count);
+
             //Checking if the restauarant already exists
             const restaurant = await Restaurant.findOne({
                 email,
@@ -48,6 +53,7 @@ const restaurantResolver = {
 
             try {
                 const newRestaurant = new Restaurant({
+                    _id: count + 1,
                     ownerName,
                     name,
                     email,
@@ -64,26 +70,36 @@ const restaurantResolver = {
             }
         },
         registerRestaurant: async (_parent, args) => {
-            const { restaurantId, password, email } = args.input;
+            const { _id, password, email } = args.input;
 
             const restaurant = await Restaurant.findOne({
                 email: email,
             });
-
+            console.log(restaurant);
             if (!restaurant) {
                 throw new ApolloError("Restaurant not registered");
             }
 
             const hashedPass = await bcrypt.hash(password, 10);
 
-            restaurant.restaurantId = restaurantId;
-            restaurant.password = hashedPass;
+            const newRestaurant = new Restaurant({
+                _id,
+                ownerName: restaurant.ownerName,
+                name: restaurant.name,
+                email: restaurant.email,
+                address: restaurant.address,
+                phone: restaurant.phone,
+                password: hashedPass,
+            });
 
             try {
-                const savedRestro = await restaurant.save();
+                const deletedRestro = await Restaurant.findOneAndRemove({
+                    email,
+                });
 
-                console.log(savedRestro, "restro");
+                const savedRestro = await newRestaurant.save();
 
+                console.log(savedRestro);
                 return savedRestro;
             } catch (e) {
                 console.log(e);
@@ -91,12 +107,12 @@ const restaurantResolver = {
             }
         },
         loginRestaurant: async (_parent, args) => {
-            const { restaurantId, password } = args.input;
+            const { _id, password } = args.input;
 
             const secret = process.env.JWT_SECRET;
 
             const restaurant = await Restaurant.findOne({
-                restaurantId: restaurantId,
+                _id,
             });
 
             if (!restaurant) {

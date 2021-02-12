@@ -26,8 +26,7 @@ const RestaurantDef = gql`
         """
         String representation of mongoose id
         """
-        _id: ID!
-        restaurantId: Int!
+        _id: Int!
         ownerName: String!
         name: String!
         address: String!
@@ -53,7 +52,7 @@ const RestaurantDef = gql`
     """
     input RegisterRestaurantInput {
         email: String!
-        restaurantId: Int!
+        _id: Int!
         password: String!
     }
 
@@ -61,7 +60,7 @@ const RestaurantDef = gql`
     Input type for login
     """
     input LoginRestaurantInput {
-        restaurantId: Int!
+        _id: Int!
         password: String!
     }
 
