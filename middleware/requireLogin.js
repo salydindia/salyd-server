@@ -20,14 +20,14 @@ module.exports = async (request) => {
     try {
         //Verifying token for accessing protected pages
         const user = jwt.verify(token, secret);
+
         const { _id } = user;
-        const userData = await Users.findById({
-            _id,
-        });
+
+        console.log(_id, "id");
 
         return {
             isAuth: true,
-            userData,
+            _id,
             message: "Authenticated",
         };
     } catch (e) {

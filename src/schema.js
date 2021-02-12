@@ -14,10 +14,18 @@ const { restaurantResolver } = require("./restaurant/restaurant.resolvers.js");
 const MenuDef = require("./restaurant/menu.types.js");
 const { menuResolver } = require("./restaurant/menu.resolvers.js");
 
+//Room type Definition
+const RoomDef = require("./room/room.types.js");
+const { roomResolver } = require("./room/room.resolvers");
+
+//Order type definition
+const OrderDef = require("./orders/order.types.js");
+const { orderResolver } = require("./orders/order.resolvers.js");
+
 //Todo add subscription
 
 //Table Type Definition
-const tableDef = require("./table/table.types.js");
+const TableDef = require("./table/table.types.js");
 const { tableResolver } = require("./table/table.resolvers.js");
 
 const SchemaDef = gql`
@@ -28,7 +36,15 @@ const SchemaDef = gql`
 `;
 
 //All type definitions
-const typedefs = [UsersDef, SchemaDef, RestaurantDef, MenuDef, tableDef];
+const typedefs = [
+    UsersDef,
+    SchemaDef,
+    RestaurantDef,
+    MenuDef,
+    TableDef,
+    RoomDef,
+    OrderDef,
+];
 
 const mergedDefs = mergeTypeDefs(typedefs);
 
@@ -37,6 +53,8 @@ const resolvers = [
     restaurantResolver,
     menuResolver,
     tableResolver,
+    roomResolver,
+    orderResolver,
 ];
 
 const mergedResolvers = mergeResolvers(resolvers);
