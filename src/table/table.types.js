@@ -7,49 +7,15 @@ const TableDef = gql`
         _id is restaurantId+threedigits = tableId
         """
         addTable(_id: Int!): AddTablePayload
-
-        """
-        New table created by user by entering table details(User will be admin)
-        """
-        newTable(tableId: Int!): NewTablePayload
-
-        """
-        Join table using roomId (for logged in users)
-        """
-        addMember(roomId: Int!): AddMemberPayload
-
-        """
-        Join table using roomId(for guest users)
-        """
-        addGuestMember(input: AddGuestMemberInput!): AddGuestMemberPayload
     }
 
     type Table {
         _id: Int!
-        users: [User]
-        tableOf: Restaurant
-        roomId: Int
-        menu: [OrderedMenu]
+        tableOf: Restaurant!
+        tableNo: Int!
     }
 
     type AddTablePayload {
-        table: Table
-    }
-
-    type NewTablePayload {
-        table: Table
-    }
-
-    type AddMemberPayload {
-        table: Table
-    }
-
-    input AddGuestMemberInput {
-        roomId: Int!
-        name: String!
-    }
-
-    type AddGuestMemberPayload {
         table: Table
     }
 `;

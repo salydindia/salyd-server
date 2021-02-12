@@ -8,32 +8,13 @@ const tableSchema = new schema({
     _id: {
         type: Number,
     },
-    users: [
-        {
-            type: ObjectId,
-            ref: "Users",
-        },
-    ],
     tableOf: {
-        type: ObjectId,
+        type: Number,
         ref: "Restaurant",
     },
-    roomId: {
+    tableNo: {
         type: Number,
     },
-    menu: [
-        {
-            name: {
-                type: String,
-            },
-            price: {
-                type: Number,
-            },
-            count: {
-                type: Number,
-            },
-        },
-    ],
 });
 
 const Table = mongoose.model("Table", tableSchema);
