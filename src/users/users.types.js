@@ -3,6 +3,11 @@ const { gql } = require("apollo-server-express");
 const UsersDef = gql`
     type Query {
         getUser: User
+
+        """
+        fetch order history of a particular user
+        """
+        orderHistoryUser: OrderHistoryUserPayload
     }
     type Mutation {
         registerUser(input: RegisterUserInput!): User!
@@ -40,10 +45,9 @@ const UsersDef = gql`
         user: User
     }
 
-    # type getUserPayload {
-    #     user: User
-    #     message: String!
-    # }
+    type OrderHistoryUserPayload {
+        orders: Order
+    }
 `;
 
 module.exports = {

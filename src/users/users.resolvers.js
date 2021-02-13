@@ -32,6 +32,44 @@ const userResolver = {
                 );
             }
         },
+        orderHistoryUser: async (_parent, args, context) => {
+            if (context.isAuth) {
+                try {
+                    const user = await Users.findById({
+                        _id: context._id,
+                    }).populate({
+                        path: "orders",
+                        populate: { path: "restaurant" },
+                    });
+
+                    const orders = user.orders;
+                    console.log(user.orders);
+
+                    let ordersHistory = [];
+
+                    for (var i = 0; i < orders.length; i++) {
+                        if (orders[i].status === 1) {
+                            console.log("in");
+                            ordersHistory.push(orders[i]);
+                        }
+                    }
+
+                    return {
+                        orders: ordersHistory,
+                    };
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
+            }
+        },
     },
     Mutation: {
         registerUser: async (_parent, args) => {
