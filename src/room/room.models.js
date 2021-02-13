@@ -10,6 +10,7 @@ const roomSchema = new schema({
     },
     orderId: {
         type: Number,
+        ref: "Order",
     },
     users: [
         {

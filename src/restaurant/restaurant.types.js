@@ -1,6 +1,18 @@
 const { gql } = require("apollo-server-express");
 
 const RestaurantDef = gql`
+    type Query {
+        getRestaurant: Restaurant
+        """
+        Order History of the restaurant
+        """
+        orderHistoryRestaurant: OrderHistoryRestaurantPayload
+
+        """
+        Ongoing orders on all tables(Fetching all rooms)
+        """
+        ongoingOrders: OngoingOrdersPayload
+    }
     type Mutation {
         """
         Restaurant signing up with their details
@@ -16,10 +28,11 @@ const RestaurantDef = gql`
         Restaurant Login using restaurantId and password
         """
         loginRestaurant(input: LoginRestaurantInput): LoginRestaurantPayload
-    }
 
-    type Query {
-        getRestaurant: Restaurant
+        """
+        Complete order from restaurant side
+        """
+        completeOrder(orderId: ID!): CompleteOrderPayload
     }
 
     type Restaurant {
@@ -69,6 +82,18 @@ const RestaurantDef = gql`
         message: String!
         token: String
         restaurant: Restaurant
+    }
+
+    type OrderHistoryRestaurantPayload {
+        orders: [Order]!
+    }
+
+    type OngoingOrdersPayload {
+        rooms: [Room]!
+    }
+
+    type CompleteOrderPayload {
+        order: Order!
     }
 `;
 

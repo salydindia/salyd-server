@@ -1,4 +1,5 @@
 const Restaurant = require("./restaurant.models.js");
+const Order = require("../orders/order.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -9,6 +10,85 @@ const {
 
 const restaurantResolver = {
     Query: {
+        orderHistoryRestaurant: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const restaurantId = context._id;
+
+                try {
+                    const restaurant = await Restaurant.findById({
+                        _id: restaurantId,
+                    }).populate({
+                        path: "orders",
+                        populate: { path: "orderOwner" },
+                    });
+
+                    const orders = restaurant.orders;
+                    console.log(restaurant.orders);
+
+                    let ordersHistory = [];
+
+                    for (var i = 0; i < orders.length; i++) {
+                        if (orders[i].status === 1) {
+                            console.log("in");
+                            ordersHistory.push(orders[i]);
+                        }
+                    }
+
+                    return {
+                        orders: ordersHistory,
+                    };
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
+            }
+        },
+        ongoingOrders: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const restaurantId = context._id;
+
+                try {
+                    const rooms = await Room.find({
+                        tableOf: restaurantId,
+                    })
+                        .populate("table")
+                        .populate({
+                            path: "orders",
+                            populate: { path: "orderOwner" },
+                        });
+
+                    let ordersData = [];
+                    const orders = rooms.orders;
+
+                    for (var i = 0; i < orders.length; i++) {
+                        if (orders[i].status === 0) {
+                            ordersData.push(orders[i]);
+                        }
+                    }
+
+                    return {
+                        rooms: ordersData,
+                    };
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
+            }
+        },
         getRestaurant: async (_parent, args, context) => {
             if (context.isAuth) {
                 const restaurantId = context._id;
@@ -143,6 +223,42 @@ const restaurantResolver = {
             } catch (e) {
                 console.log(e, "Error");
                 throw new ApolloError(e.message);
+            }
+        },
+        completeOrder: async (_parent, args, context) => {
+            const { orderId } = args;
+
+            if (context.isAuth) {
+                try {
+                    const order = await Order.findByIdAndUpdate(
+                        {
+                            _id: orderId,
+                        },
+                        {
+                            $set: {
+                                status: 1,
+                            },
+                        },
+                        {
+                            new: true,
+                            runValidators: true,
+                        }
+                    ).populate("orderOwner");
+
+                    return {
+                        order,
+                    };
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
             }
         },
     },
