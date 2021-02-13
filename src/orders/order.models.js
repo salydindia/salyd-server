@@ -7,8 +7,11 @@ const orderSchema = new schema({
     _id: {
         type: Number,
     },
-    orderMenu: [
+    placedMenu: [
         {
+            _id: {
+                type: ObjectId,
+            },
             name: {
                 type: String,
             },
@@ -19,7 +22,7 @@ const orderSchema = new schema({
                 type: Number,
             },
             extraDetails: {
-                type: Number,
+                type: String,
             },
         },
     ],
