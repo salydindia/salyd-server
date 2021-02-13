@@ -43,6 +43,11 @@ const RoomDef = gql`
         Admin of the room
         """
         admin: User!
+
+        """
+        Table to which room belongs
+        """
+        table: Table!
     }
 
     type newRoomPayload {

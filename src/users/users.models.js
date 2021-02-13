@@ -15,11 +15,12 @@ const usersSchema = new schema({
     password: {
         type: String,
     },
-    role: {
-        type: String,
-        enum: ["view", "admin"],
-        default: "view",
-    },
+    orders: [
+        {
+            type: Number,
+            ref: "Order",
+        },
+    ],
 });
 
 const Users = mongoose.model("Users", usersSchema);

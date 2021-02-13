@@ -34,6 +34,7 @@ const RestaurantDef = gql`
         email: String!
         password: String
         menu: [Menu]
+        orders: [Order]
     }
 
     """

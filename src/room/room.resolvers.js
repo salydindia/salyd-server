@@ -2,6 +2,7 @@ const Table = require("../table/tables.models");
 const Users = require("../users/users.models");
 const Order = require("../orders/order.models");
 const Room = require("./room.models.js");
+const Restaurant = require("../restaurant/restaurant.models.js");
 
 const {
     AuthenticationError,
@@ -16,29 +17,33 @@ const roomResolver = {
             if (context.isAuth) {
                 const { tableId } = args;
 
-                const roomId = Math.floor(1000 + Math.random() * 9000);
-                const orderId = Math.floor(1000 + Math.random() * 9000);
-
                 try {
                     const table = await Table.findById({
                         _id: tableId,
                     });
 
+                    //Generating random roomIds and orderIds (4 digits)
+                    const roomId = Math.floor(1000 + Math.random() * 9000);
+                    const orderId = Math.floor(1000 + Math.random() * 9000);
+
                     if (table) {
                         const restaurantId = tableId.toString().substring(0, 6);
 
+                        //Saving a new room
                         const newRoom = new Room({
                             _id: roomId,
                             orderId,
                             tableOf: restaurantId,
                             users: [context._id],
                             admin: context._id,
+                            table: tableId, //for showing tablenos on restaurant portal
                         });
 
                         const room = await newRoom.save();
 
                         console.log(room);
 
+                        //Saving basic order Details (will work for order history)
                         const newOrder = new Order({
                             _id: orderId,
                             orderOwner: context._id,
@@ -48,7 +53,40 @@ const roomResolver = {
 
                         const order = await newOrder.save();
 
-                        console.log(order);
+                        //Adding reference of orders(orderId) to store order history
+                        const restaurant = await Restaurant.findOneAndUpdate(
+                            {
+                                _id: restaurantId,
+                            },
+                            {
+                                $push: {
+                                    orders: orderId,
+                                },
+                            },
+                            {
+                                new: true,
+                                runValidators: true,
+                            }
+                        );
+                        console.log(restaurant);
+
+                        //Adding reference of orders(orderId) to store order history
+                        const user = await Users.findByIdAndUpdate(
+                            {
+                                _id: context._id,
+                            },
+                            {
+                                $push: {
+                                    orders: orderId,
+                                },
+                            },
+                            {
+                                new: true,
+                                runValidators: true,
+                            }
+                        );
+
+                        console.log(user);
 
                         return {
                             room,
@@ -56,20 +94,6 @@ const roomResolver = {
                     } else {
                         throw new UserInputError("Invalid TableId");
                     }
-                    // const user = await Users.findByIdAndUpdate(
-                    //     {
-                    //         _id: context._id,
-                    //     },
-                    //     {
-                    //         $set: {
-                    //             role: "admin",
-                    //         },
-                    //     },
-                    //     {
-                    //         new: true,
-                    //         runValidators: true,
-                    //     }
-                    // );
                 } catch (e) {
                     console.log(e, "error");
                     throw new ApolloError(e.message);
@@ -103,6 +127,22 @@ const roomResolver = {
                         .populate("users");
 
                     console.log(room);
+
+                    //Adding reference of orders(orderId) to store order history
+                    const user = await Users.findByIdAndUpdate(
+                        {
+                            _id: context._id,
+                        },
+                        {
+                            $push: {
+                                orders: room.orderId,
+                            },
+                        },
+                        {
+                            new: true,
+                            runValidators: true,
+                        }
+                    );
 
                     if (room === null) {
                         throw new UserInputError("Invalid RoomId");
@@ -149,6 +189,22 @@ const roomResolver = {
                     .populate("tableOf")
                     .populate("users");
                 console.log(room);
+
+                //Adding reference of orders(orderId) to store order history
+                const user = await Users.findByIdAndUpdate(
+                    {
+                        _id: savedUser._id,
+                    },
+                    {
+                        $push: {
+                            orders: room.orderId,
+                        },
+                    },
+                    {
+                        new: true,
+                        runValidators: true,
+                    }
+                );
 
                 if (room === null) {
                     throw new UserInputError("Invalid RoomId");

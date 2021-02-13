@@ -19,7 +19,7 @@ const UsersDef = gql`
         email: String!
         phone: Float!
         password: String!
-        role: String
+        orders: [Order]
     }
 
     input RegisterUserInput {
