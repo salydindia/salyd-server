@@ -142,7 +142,7 @@ const restaurantResolver = {
                 }
             } catch (e) {
                 console.log(e, "Error");
-                throw new ApolloError("Internal Sever Error", "ERR_POST");
+                throw new ApolloError(e.message);
             }
         },
     },

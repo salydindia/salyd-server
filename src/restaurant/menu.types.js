@@ -10,6 +10,7 @@ const MenuDef = gql`
     }
 
     type Menu {
+        _id: ID!
         name: String!
         price: Int!
         category: Category!

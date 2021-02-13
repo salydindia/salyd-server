@@ -21,7 +21,7 @@ const menuSchema = new schema({
         type: String,
     },
     isVeg: {
-        type: Boolean,
+        type: String,
     },
     maxQuantity: {
         type: Number,
