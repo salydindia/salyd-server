@@ -37,7 +37,7 @@ const RoomDef = gql`
         """
         Random orderId generated upon
         """
-        orderId: Int!
+        orderId: Order!
 
         """
         Admin of the room
@@ -48,6 +48,8 @@ const RoomDef = gql`
         Table to which room belongs
         """
         table: Table!
+
+
     }
 
     type newRoomPayload {

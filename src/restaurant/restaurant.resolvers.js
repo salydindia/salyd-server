@@ -1,5 +1,7 @@
 const Restaurant = require("./restaurant.models.js");
 const Order = require("../orders/order.models");
+const Room = require("../room/room.models.js");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -60,21 +62,24 @@ const restaurantResolver = {
                     })
                         .populate("table")
                         .populate({
-                            path: "orders",
+                            path: "orderId",
                             populate: { path: "orderOwner" },
                         });
 
-                    let ordersData = [];
-                    const orders = rooms.orders;
+                    console.log("rooms", rooms);
 
-                    for (var i = 0; i < orders.length; i++) {
-                        if (orders[i].status === 0) {
-                            ordersData.push(orders[i]);
+                    let roomsData = [];
+
+                    //Every room has one order
+                    //looping over rooms to push their each order in orderHistory
+                    for (var i = 0; i < rooms.length; i++) {
+                        if (rooms[i].orderId.status === 0) {
+                            roomsData.push(rooms[i]);
                         }
                     }
 
                     return {
-                        rooms: ordersData,
+                        rooms: roomsData,
                     };
                 } catch (e) {
                     console.log(e, "error");

@@ -46,7 +46,7 @@ const UsersDef = gql`
     }
 
     type OrderHistoryUserPayload {
-        orders: Order
+        orders: [Order]
     }
 `;
 

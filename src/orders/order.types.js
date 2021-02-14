@@ -10,7 +10,7 @@ const orderDef = gql`
         placedMenu: [placedMenu]
         orderOwner: User!
         status: Int!
-        restauarant: Restaurant!
+        restaurant: Restaurant!
         date: String
     }
 

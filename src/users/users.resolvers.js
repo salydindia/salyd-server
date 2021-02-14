@@ -54,6 +54,7 @@ const userResolver = {
                         }
                     }
 
+                    console.log(ordersHistory[0]._id, "hisory");
                     return {
                         orders: ordersHistory,
                     };
