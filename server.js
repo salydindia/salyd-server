@@ -57,7 +57,7 @@ app.use(morgan("combined", { stream: logger.stream }));
 //Applying middlewares like body parser and cors
 server.applyMiddleware({
     app,
-    path: "/api",
+    path: "/",
 });
 
 const PORT = process.env.PORT || 5000;

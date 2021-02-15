@@ -32,6 +32,20 @@ const userResolver = {
                 );
             }
         },
+        getAllUsers: async (_parent, args) => {
+            const { name } = args;
+            console.log(args);
+            try {
+                const users = await Users.findOne({
+                    name,
+                });
+                console.log(users);
+                return users;
+            } catch (e) {
+                console.log(e);
+                throw new ApolloError(e);
+            }
+        },
         orderHistoryUser: async (_parent, args, context) => {
             if (context.isAuth) {
                 try {

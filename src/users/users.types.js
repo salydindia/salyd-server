@@ -2,6 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const UsersDef = gql`
     type Query {
+        getAllUsers(name: String!): User!
         getUser: User
 
         """
