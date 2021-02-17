@@ -32,9 +32,9 @@ const userResolver = {
                 );
             }
         },
-        getAllUsers: async (_parent, args) => {
+        getUserByName: async (_parent, args) => {
             const { name } = args;
-            console.log(args);
+            console.log(args, "args");
             try {
                 const users = await Users.findOne({
                     name,
@@ -45,6 +45,11 @@ const userResolver = {
                 console.log(e);
                 throw new ApolloError(e);
             }
+        },
+        getAllUsers: async (_parent, args) => {
+            const users = await Users.find({});
+
+            return users;
         },
         orderHistoryUser: async (_parent, args, context) => {
             if (context.isAuth) {
@@ -88,6 +93,7 @@ const userResolver = {
     },
     Mutation: {
         registerUser: async (_parent, args) => {
+            console.log("in");
             const { name, email, password, phone } = args.input;
 
             //Checking if the user already exists

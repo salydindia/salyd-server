@@ -2,9 +2,9 @@ const { gql } = require("apollo-server-express");
 
 const UsersDef = gql`
     type Query {
-        getAllUsers(name: String!): User!
+        getAllUsers: [User]!
         getUser: User
-
+        getUserByName(name: String!): User!
         """
         fetch order history of a particular user
         """

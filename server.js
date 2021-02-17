@@ -48,6 +48,8 @@ const server = new ApolloServer({
             },
         },
     ],
+    introspection: true,
+    playground: true,
 });
 
 app.use(cors());
