@@ -17,6 +17,7 @@ const roomResolver = {
             if (context.isAuth) {
                 const { tableId } = args;
 
+                console.log(typeof tableId);
                 try {
                     const table = await Table.findById({
                         _id: tableId,
@@ -40,6 +41,11 @@ const roomResolver = {
                         });
 
                         const room = await newRoom.save();
+                        room.populate("tableOf")
+                            .populate("table")
+                            .populate("users")
+                            .populate("admin")
+                            .execPopulate();
 
                         console.log(room);
 

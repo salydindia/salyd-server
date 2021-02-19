@@ -127,7 +127,6 @@ const userResolver = {
         },
         loginUser: async (_parent, args) => {
             const { email, password } = args.input;
-
             const secret = process.env.JWT_SECRET;
 
             const user = await Users.findOne({
@@ -158,7 +157,7 @@ const userResolver = {
                     throw new AuthenticationError("Invalid credentials");
                 }
             } catch (e) {
-                throw new ApolloError("Internal Sever Error", "ERR_POST");
+                throw new ApolloError(e.message, "ERR_POST");
             }
         },
     },
