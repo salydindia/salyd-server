@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Users = require("./users.models.js");
+const Room = require("../room/room.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -10,46 +11,32 @@ const {
 
 const userResolver = {
     Query: {
-        getUser: async (_parent, args, context) => {
-            if (context.userData) {
-                const userId = context.userData_id;
-
+        getRestroDetails: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const { roomId } = args;
                 try {
-                    const user = await Users.findById({
-                        _id: userId,
-                    });
+                    const room = await Room.findById({
+                        _id: roomId,
+                    })
+                        .populate("tableOf")
+                        .populate("table")
+                        .populate("users")
+                        .populate("admin");
 
-                    return user;
+                    if (!room) {
+                        throw new UserInputError("Invalid Details");
+                    }
+
+                    return room;
                 } catch (e) {
-                    throw new ApolloError(
-                        "Internal Server Error",
-                        "Error fetching"
-                    );
+                    console.log(e, "error");
+                    throw new ApolloError(e.message, "Error fetching");
                 }
             } else {
                 throw new AuthenticationError(
                     "You need to login to access this resource"
                 );
             }
-        },
-        getUserByName: async (_parent, args) => {
-            const { name } = args;
-            console.log(args, "args");
-            try {
-                const users = await Users.findOne({
-                    name,
-                });
-                console.log(users);
-                return users;
-            } catch (e) {
-                console.log(e);
-                throw new ApolloError(e);
-            }
-        },
-        getAllUsers: async (_parent, args) => {
-            const users = await Users.find({});
-
-            return users;
         },
         orderHistoryUser: async (_parent, args, context) => {
             if (context.isAuth) {

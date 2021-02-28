@@ -117,6 +117,7 @@ const orderResolver = {
             return menu;
         },
     },
+    //Pub Sub model
     Subscription: {
         subscribeToMenu: {
             resolve: (payload) => {

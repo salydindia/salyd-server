@@ -2,9 +2,10 @@ const { gql } = require("apollo-server-express");
 
 const UsersDef = gql`
     type Query {
-        getAllUsers: [User]!
-        getUser: User
-        getUserByName(name: String!): User!
+        """
+        Get restro details and menu by roomId
+        """
+        getRestroDetails(roomId: Int!): Room!
         """
         fetch order history of a particular user
         """

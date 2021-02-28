@@ -96,7 +96,7 @@ const menuResolver = {
                 const { _id } = args.input;
 
                 try {
-                    const updatedRestro = await Restaurant.updateOne(
+                    const { n, nModified, ok } = await Restaurant.updateOne(
                         {
                             _id: restaurantId,
                         },
@@ -113,9 +113,13 @@ const menuResolver = {
                         }
                     );
 
-                    console.log(updatedRestro, "updated");
+                    console.log(n, " ", ok);
 
-                    return updatedRestro;
+                    return {
+                        n,
+                        nModified,
+                        ok,
+                    };
                 } catch (e) {
                     console.log(e, "error");
                     throw new ApolloError(
