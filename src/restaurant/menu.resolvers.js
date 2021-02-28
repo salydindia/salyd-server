@@ -13,7 +13,9 @@ const menuResolver = {
                 const restaurantId = context._id;
 
                 const { input } = args;
-                console.log(input);
+
+                console.log(input, "input");
+
                 try {
                     const restaurant = await Restaurant.findByIdAndUpdate(
                         {
@@ -33,6 +35,87 @@ const menuResolver = {
                     console.log(restaurant);
 
                     return restaurant;
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
+            }
+        },
+        updateMenu: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const restaurantId = context._id;
+
+                const { input } = args;
+
+                try {
+                    const restaurant = await Restaurant.findById({
+                        _id: restaurantId,
+                    });
+
+                    const restroMenu = restaurant.menu;
+
+                    const menuIndex = restroMenu.findIndex((menuItem) => {
+                        return menuItem._id.toString() === input._id.toString();
+                    });
+
+                    console.log(menuIndex, "index");
+
+                    restroMenu[menuIndex] = input;
+
+                    restaurant.menu = restroMenu;
+
+                    let savedRestro = await restaurant.save();
+
+                    console.log(savedRestro, "updatedMenu");
+
+                    return savedRestro;
+                } catch (e) {
+                    console.log(e, "error");
+                    throw new ApolloError(
+                        "Internal Server Error",
+                        "Error fetching"
+                    );
+                }
+            } else {
+                throw new AuthenticationError(
+                    "You need to login to access this resource"
+                );
+            }
+        },
+        deleteMenu: async (_parent, args, context) => {
+            if (context.isAuth) {
+                const restaurantId = context._id;
+
+                const { _id } = args.input;
+
+                try {
+                    const updatedRestro = await Restaurant.updateOne(
+                        {
+                            _id: restaurantId,
+                        },
+                        {
+                            $pull: {
+                                menu: {
+                                    _id,
+                                },
+                            },
+                        },
+                        {
+                            safe: true,
+                            multi: true,
+                        }
+                    );
+
+                    console.log(updatedRestro, "updated");
+
+                    return updatedRestro;
                 } catch (e) {
                     console.log(e, "error");
                     throw new ApolloError(

@@ -1,12 +1,20 @@
 const Order = require("./order.models.js");
 const Room = require("../room/room.models");
 const Restaurant = require("../restaurant/restaurant.models.js");
+const { PubSub } = require("apollo-server-express");
+
+const pubsub = new PubSub();
 
 const {
     AuthenticationError,
     ApolloError,
     UserInputError,
 } = require("apollo-server-express");
+
+//Todo Saving orderId in restaurant's collection (having an array of orderIds)
+//Todo Simmilarly doing for all the users
+//Todo Saving tableIds in room collection (Needed while fetching orders for each table rooms on restro side)
+//Todo setting status to 1 when restaurant completes the order from their portal
 
 const orderResolver = {
     Query: {},
@@ -100,6 +108,22 @@ const orderResolver = {
                     "Please login to access this resource"
                 );
             }
+        },
+        addMenuToCart: (_parent, args) => {
+            const { menu } = args;
+            pubsub.publish("MENU_ADDED", menu);
+            console.log(menu, "menu");
+            console.log(typeof menu);
+            return menu;
+        },
+    },
+    Subscription: {
+        subscribeToMenu: {
+            resolve: (payload) => {
+                console.log(payload, "payload");
+                return payload;
+            },
+            subscribe: (_parent, args) => pubsub.asyncIterator(["MENU_ADDED"]),
         },
     },
 };

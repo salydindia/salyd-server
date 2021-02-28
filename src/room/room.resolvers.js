@@ -14,6 +14,7 @@ const roomResolver = {
     Query: {},
     Mutation: {
         newRoom: async (_parent, args, context) => {
+            console.log(args);
             if (context.isAuth) {
                 const { tableId } = args;
 

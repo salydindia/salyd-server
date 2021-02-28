@@ -62,7 +62,6 @@ const userResolver = {
                     });
 
                     const orders = user.orders;
-                    console.log(user.orders);
 
                     let ordersHistory = [];
 
@@ -73,7 +72,8 @@ const userResolver = {
                         }
                     }
 
-                    console.log(ordersHistory[0]._id, "hisory");
+                    console.log(ordersHistory, "orders");
+
                     return {
                         orders: ordersHistory,
                     };

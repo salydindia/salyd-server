@@ -32,6 +32,7 @@ const SchemaDef = gql`
     schema {
         query: Query
         mutation: Mutation
+        subscription: Subscription
     }
 `;
 

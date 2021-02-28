@@ -8,6 +8,7 @@ const bodyparser = require("body-parser");
 const morgan = require("morgan");
 const logger = require("./config/winston");
 const requireLogin = require("./middleware/requireLogin");
+const http = require("http");
 
 dotenv.config({
     path: ".env",
@@ -35,6 +36,15 @@ mongoose
 const server = new ApolloServer({
     schema,
     context: requireLogin,
+    subscriptions: {
+        path: "/subscriptions",
+        onConnect: (connectionParams, webSocket, context) => {
+            console.log("Connected!");
+        },
+        onDisconnect: (webSocket, context) => {
+            console.log("Disconnected!");
+        },
+    },
     logger,
     tracing: true,
     plugins: [
@@ -64,7 +74,10 @@ server.applyMiddleware({
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+httpServer.listen(PORT, () => {
     logger.info(
         `Apollo server listening at http://localhost:5000${server.graphqlPath}`
     );

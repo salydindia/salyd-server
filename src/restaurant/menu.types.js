@@ -7,6 +7,16 @@ const MenuDef = gql`
         //? need to see whether we/restro owner will add the menu
         """
         addMenu(input: AddMenuInput): Restaurant
+
+        """
+        Updating of menu by the restaurant (Takes the whole single menu item which is to be updated)
+        """
+        updateMenu(input: UpdateMenuInput): Restaurant!
+
+        """
+        Deleting menu of the restaurant
+        """
+        deleteMenu(input: DeleteMenuInput): DeletePayload!
     }
 
     type Menu {
@@ -30,6 +40,21 @@ const MenuDef = gql`
         maxQuantity: Int
     }
 
+    input UpdateMenuInput {
+        _id: ID!
+        name: String!
+        price: Int!
+        category: Category!
+        description: String
+        image: String
+        isVeg: String
+        maxQuantity: Int
+    }
+
+    input DeleteMenuInput {
+        _id: ID!
+    }
+
     enum Category {
         Snacks
         Breakfast
@@ -44,6 +69,12 @@ const MenuDef = gql`
         price: Int!
         count: Int!
         extraDetails: String
+    }
+
+    type DeletePayload {
+        n: Int!
+        nModified: Int!
+        ok: Int!
     }
 `;
 

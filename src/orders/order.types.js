@@ -3,6 +3,11 @@ const { gql } = require("apollo-server-express");
 const orderDef = gql`
     type Mutation {
         placeOrder(input: PlaceOrderInput): PlaceOrderPayload!
+        addMenuToCart(menu: String!): String!
+    }
+
+    type Subscription {
+        subscribeToMenu: String!
     }
 
     type Order {
