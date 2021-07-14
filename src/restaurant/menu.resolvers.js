@@ -59,15 +59,8 @@ const menuResolver = {
                         _id: restaurantId,
                     });
 
-                    const restroMenu = restaurant.menu;
-
-                    const menuIndex = restroMenu.findIndex((menuItem) => {
-                        return menuItem._id.toString() === input._id.toString();
-                    });
-
-                    console.log(menuIndex, "index");
-
-                    restroMenu[menuIndex] = input;
+                    var restroMenu = restaurant.menu;
+                    restroMenu = input;
 
                     restaurant.menu = restroMenu;
 

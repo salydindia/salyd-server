@@ -77,6 +77,7 @@ const RestaurantDef = gql`
         _id: Int!
         password: String!
     }
+    
 
     type LoginRestaurantPayload {
         message: String!

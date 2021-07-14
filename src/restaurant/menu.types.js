@@ -9,9 +9,9 @@ const MenuDef = gql`
         addMenu(input: AddMenuInput): Restaurant
 
         """
-        Updating of menu by the restaurant (Takes the whole single menu item which is to be updated)
+        Updating of menu by the restaurant (Takes the whole menu as input (Changed one))
         """
-        updateMenu(input: UpdateMenuInput): Restaurant!
+        updateMenu(input: [UpdateMenuInput]): Restaurant!
 
         """
         Deleting menu of the restaurant
@@ -33,7 +33,7 @@ const MenuDef = gql`
     input AddMenuInput {
         name: String!
         price: Int!
-        category: Category!
+        category: Category
         description: String
         image: String
         isVeg: String
@@ -41,10 +41,10 @@ const MenuDef = gql`
     }
 
     input UpdateMenuInput {
-        _id: ID!
+        _id: ID
         name: String!
         price: Int!
-        category: Category!
+        category: Category
         description: String
         image: String
         isVeg: String

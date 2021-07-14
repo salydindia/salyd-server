@@ -12,8 +12,10 @@ const {
 const userResolver = {
     Query: {
         getRestroDetails: async (_parent, args, context) => {
+            console.log("ok");
             if (context.isAuth) {
                 const { roomId } = args;
+                console.log(roomId, typeof roomId, "roomId", "type");
                 try {
                     const room = await Room.findById({
                         _id: roomId,
@@ -23,6 +25,7 @@ const userResolver = {
                         .populate("users")
                         .populate("admin");
 
+                    console.log("room", room);
                     if (!room) {
                         throw new UserInputError("Invalid Details");
                     }

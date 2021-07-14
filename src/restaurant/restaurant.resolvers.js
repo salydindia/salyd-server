@@ -122,6 +122,8 @@ const restaurantResolver = {
         addRestaurant: async (_parent, args) => {
             const { ownerName, name, address, email, phone } = args.input;
 
+            console.log(ownerName, name);
+
             const allRestaurants = await Restaurant.find({});
             const count = allRestaurants.length;
 
