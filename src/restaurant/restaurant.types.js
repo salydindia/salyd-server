@@ -32,7 +32,7 @@ const RestaurantDef = gql`
         """
         Complete order from restaurant side
         """
-        completeOrder(orderId: ID!): CompleteOrderPayload
+        completeOrder(orderId: Int!): CompleteOrderPayload
     }
 
     type Restaurant {
@@ -77,7 +77,7 @@ const RestaurantDef = gql`
         _id: Int!
         password: String!
     }
-    
+
 
     type LoginRestaurantPayload {
         message: String!

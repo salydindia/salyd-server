@@ -11,7 +11,7 @@ const orderDef = gql`
     }
 
     type Order {
-        _id: ID!
+        _id: Int!
         placedMenu: [placedMenu]
         orderOwner: User!
         status: Int!

@@ -73,7 +73,7 @@ const restaurantResolver = {
                     //Every room has one order
                     //looping over rooms to push their each order in orderHistory
                     for (var i = 0; i < rooms.length; i++) {
-                        if (rooms[i].orderId.status === 0) {
+                        if (rooms[i].orderId.status !== -1) {
                             roomsData.push(rooms[i]);
                         }
                     }
