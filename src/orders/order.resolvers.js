@@ -35,6 +35,10 @@ const orderResolver = {
                         _id: restaurantId,
                     });
 
+                    // const oldOrder = await Order.findById({
+                    //     _id:orderId
+                    // })
+
                     const menu = restaurant.menu;
 
                     console.log(menu);
@@ -58,6 +62,7 @@ const orderResolver = {
 
                     let placedMenu = [];
 
+                    //Just taking the id of the items from the db
                     for (let i = 0; i < menu.length; i++) {
                         for (let j = 0; j < orderedMenu.length; j++) {
                             if (orderedMenu[j]._id === menu[i]._id.toString()) {
@@ -76,6 +81,15 @@ const orderResolver = {
                     }
 
                     console.log(placedMenu);
+
+                    // oldOrder.placedMenu.map((item) => {
+                    //     if(item._id == placed)
+                    // })
+                    // order.placedMenu.map((item) => {
+                    //     placedMenu.push(item);
+                    // })
+
+                    // console.log(placedMenu,"placedMenu");
 
                     const { orderId } = room;
 

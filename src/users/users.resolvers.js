@@ -13,7 +13,7 @@ const userResolver = {
     Query: {
         getRestroDetails: async (_parent, args, context) => {
             console.log("ok");
-            if (context.isAuth) {
+            // if (context.isAuth) {
                 const { roomId } = args;
                 console.log(roomId, typeof roomId, "roomId", "type");
                 try {
@@ -35,12 +35,12 @@ const userResolver = {
                     console.log(e, "error");
                     throw new ApolloError(e.message, "Error fetching");
                 }
-            } else {
-                throw new AuthenticationError(
-                    "You need to login to access this resource"
-                );
-            }
-        },
+            // } else {
+            //     throw new AuthenticationError(
+            //         "You need to login to access this resource"
+            //     );
+            // }
+            },
         orderHistoryUser: async (_parent, args, context) => {
             if (context.isAuth) {
                 try {
